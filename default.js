@@ -25,13 +25,13 @@ $(function(){
 				$('#'+data[i]['title_id']).css("color", "green");
 			}
 			else if (elapsedtime > 5 && elapsedtime < 30){
-				$('#'+data[i]['title_id']).css("color", "yellow");
+				$('#'+data[i]['title_id']).css("color", "orange");
 			}
 			else if (elapsedtime > 30 && elapsedtime < 240){
 				$('#'+data[i]['title_id']).css("color", "red");
 			}
 			else {
-				$('#'+data[i]['title_id']).css("color", "red");
+				$('#'+data[i]['title_id']).css("color", "black");
 			}
 			
 			var notes = data[i]['notes'];
