@@ -15,4 +15,4 @@ function getCaseNumber(){
 	})
 }
 
-setInterval(getCaseNumber, 10000);
+setInterval(getCaseNumber, 30000);
