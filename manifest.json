@@ -12,6 +12,10 @@
         "default_popup": "default.html"
     },
 	
+	"background":{
+		"page": "background.html"
+	},
+	
 	"permissions": [
 		"http://*/"
 ]
