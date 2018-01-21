@@ -4,9 +4,10 @@ $(function(){
 	$.getJSON("http://tsdata/api/cases/emailqueue")
 	.done(function(data, textStatus, jqXHR){
 		for (var i = 0; i<data.length; i++){
-			if (data[i].status != "New" ) {
+			if (data[i]['status'] != 'New' || data[i]['queue'] != 'Support') {
 				continue;
 			}
+			
 			
 			data[i]['summary_id'] = "summary".concat(i);
 			data[i]['title_id'] = "title".concat(i);
@@ -55,3 +56,6 @@ $(function(){
 		chrome.tabs.create({url:$(this).attr('href')});
 	})
 });
+
+
+
