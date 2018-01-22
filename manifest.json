@@ -1,8 +1,8 @@
 {
     "manifest_version": 2,
 
-    "name": "Test Extension",
-    "description": "Simple Test",
+    "name": "Email Case Monitor",
+    "description": "Monitor new email cases support queue",
     "version": "1.0",
 	
 	"content_security_policy": "script-src 'self' 'unsafe-eval' https://maxcdn.bootstrapcdn.com https://cdnjs.cloudflare.com https://ajax.googleapis.com; object-src 'self'",
