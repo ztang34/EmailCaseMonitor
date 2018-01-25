@@ -29,8 +29,11 @@ function getCaseNumber(){
 		chrome.browserAction.setBadgeText({text: caseNumber.toString()});
 		
 		//attach listener to notification to open its case in a new tab
-		chrome.notifications.onClicked.addListener(function(notificationId){
+		chrome.notifications.onClicked.addListener(function cb(notificationId){
 			chrome.tabs.create({url: caseLink[notificationId]});
+			
+			//remove listener to avoid duplicate tabs opening
+			chrome.notifications.onClicked.removeListener(cb);
 		})
 	})
 	.fail(function(jqxHR, textStatus, errorThrown){
