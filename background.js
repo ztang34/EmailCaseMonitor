@@ -16,8 +16,8 @@ function getCaseNumber(){
 			if (data[i]['status'] == 'New'&& data[i]['queue'] == 'Support'){
 				caseNumber ++;
 				
-				//create notification when case duration is less than refresh rate (30s)
-				if (caseLife(data[i]['openDate']) < 30){
+				//create notification when case duration is less than refresh rate (90s)
+				if (caseLife(data[i]['openDate']) < 90){
 					createNotification(data[i]);
 					caseLink[data[i]['number']] = data[i]['link'];
 				}
