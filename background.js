@@ -16,9 +16,10 @@ function getCaseNumber(){
 			if (data[i]['status'] == 'New'&& data[i]['queue'] == 'Support'){
 				caseNumber ++;
 				
-				//create notification when case duration is less than refresh rate (90s)
-				if (caseLife(data[i]['openDate']) < 90){
+				//create notification when case duration is less than refresh rate (60s)
+				if (caseLife(data[i]['openDate']) < 86400){
 					createNotification(data[i]);
+					audioNotification();
 					caseLink[data[i]['number']] = data[i]['link'];
 				}
 				
@@ -35,6 +36,7 @@ function getCaseNumber(){
 			//remove listener to avoid duplicate tabs opening
 			chrome.notifications.onClicked.removeListener(cb);
 		})
+		
 	})
 	.fail(function(jqxHR, textStatus, errorThrown){
 		console.log(errorThrown.toString());
@@ -61,9 +63,13 @@ function caseLife(openDate){
 	var currenttime = new Date();
 	var elapsedtime = (currenttime-opentime)/1000;
 	
-	return elapsedtime;
+	return elapsedtime;	
 }
 
+function audioNotification(){
+	var sound = new Audio('new_case_sound.mp3');
+	sound.play();
+}
 //get case info every 30 s
 setInterval(getCaseNumber, 30000);
 
