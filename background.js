@@ -1,3 +1,6 @@
+//initiate a global variable to keep track of each new case number and its link
+var caseLink = {};
+
 function getCaseNumber(){
 	
 	//get case information from tsdata
@@ -7,9 +10,6 @@ function getCaseNumber(){
 		//initiate variable to keep number of new cases in support queue
 		var caseNumber = 0;
 		
-		//initiate dicitionary to keep track of case number and its link
-		var caseLink = {};
-		
 		for (var i =0; i < data.length; i++)
 		{	
 			//only count new case in support queue
@@ -17,7 +17,7 @@ function getCaseNumber(){
 				caseNumber ++;
 				
 				//create notification when case duration is less than refresh rate (60s)
-				if (caseLife(data[i]['openDate']) < 86400){
+				if (caseLife(data[i]['openDate']) < 60){
 					createNotification(data[i]);
 					audioNotification();
 					caseLink[data[i]['number']] = data[i]['link'];
@@ -30,11 +30,11 @@ function getCaseNumber(){
 		chrome.browserAction.setBadgeText({text: caseNumber.toString()});
 		
 		//attach listener to notification to open its case in a new tab
-		chrome.notifications.onClicked.addListener(function cb(notificationId){
-			chrome.tabs.create({url: caseLink[notificationId]});
-			
-			//remove listener to avoid duplicate tabs opening
-			chrome.notifications.onClicked.removeListener(cb);
+		chrome.notifications.onClicked.addListener(notificationcb);
+		
+		//remove the listener when notification is closed to avoid multiple listeners 
+		chrome.notifications.onClosed.addListener(function(notificationId, byUser){
+			chrome.notifications.onClicked.removeListener(notificationcb);	
 		})
 		
 	})
@@ -57,6 +57,13 @@ function createNotification(caseInfo){
 	})
 	
 }
+
+//call back function for the onClick listener, create new tab for each case
+function notificationcb (notificationId){
+	chrome.tabs.create({url: caseLink[notificationId]});
+}
+
+
 //function to calculate case duration
 function caseLife(openDate){
 	var opentime = new Date(openDate);
@@ -70,7 +77,11 @@ function audioNotification(){
 	var sound = new Audio('new_case_sound.mp3');
 	sound.play();
 }
+
+
 //get case info every 30 s
 setInterval(getCaseNumber, 30000);
+
+
 
 
