@@ -17,7 +17,7 @@ function getCaseNumber(){
 				caseNumber ++;
 				
 				//create notification when case duration is less than refresh rate (60s)
-				if (caseLife(data[i]['openDate']) < 60){
+				if (caseLife(data[i]['openDate']) < 120){
 					createNotification(data[i]);
 					audioNotification();
 					caseLink[data[i]['number']] = data[i]['link'];
@@ -28,14 +28,6 @@ function getCaseNumber(){
 		
 		//use extension badge to show case number
 		chrome.browserAction.setBadgeText({text: caseNumber.toString()});
-		
-		//attach listener to notification to open its case in a new tab
-		chrome.notifications.onClicked.addListener(notificationcb);
-		
-		//remove the listener when notification is closed to avoid multiple listeners 
-		chrome.notifications.onClosed.addListener(function(notificationId, byUser){
-			chrome.notifications.onClicked.removeListener(notificationcb);	
-		})
 		
 	})
 	.fail(function(jqxHR, textStatus, errorThrown){
@@ -63,7 +55,6 @@ function notificationcb (notificationId){
 	chrome.tabs.create({url: caseLink[notificationId]});
 }
 
-
 //function to calculate case duration
 function caseLife(openDate){
 	var opentime = new Date(openDate);
@@ -81,6 +72,9 @@ function audioNotification(){
 
 //get case info every 30 s
 setInterval(getCaseNumber, 30000);
+
+//attach listener to notification to open its case in a new tab
+chrome.notifications.onClicked.addListener(notificationcb);
 
 
 
