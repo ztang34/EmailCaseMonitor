@@ -17,9 +17,12 @@ function getCaseNumber(){
 				caseNumber ++;
 				
 				//create notification when case duration is less than refresh rate (60s)
-				if (caseLife(data[i]['openDate']) < 120){
+				if (caseLife(data[i]['openDate']) < 30){
 					createNotification(data[i]);
+					
+					//add sound for each notification
 					audioNotification();
+					
 					caseLink[data[i]['number']] = data[i]['link'];
 				}
 				
